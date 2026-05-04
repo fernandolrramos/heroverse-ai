@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { motion } from "framer-motion";
+import { Analytics } from "@vercel/analytics/react";
 import { whereaboutsIntel } from "./whereaboutsData.js";
 import { analysisForSpiderManYear, spiderManAnalysisSource } from "./spiderManAnalysisData.js";
 import { analysisForCaptainAmericaYear, captainAmericaAnalysisSource } from "./captainAmericaAnalysisData.js";
@@ -1064,5 +1065,6 @@ function MCUTimelineDashboard() {
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <MCUTimelineDashboard />
+    <Analytics />
   </React.StrictMode>
 );
