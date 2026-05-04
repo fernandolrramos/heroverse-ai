@@ -764,6 +764,17 @@ function WhereaboutsCard({ intel, year }) {
   );
 }
 
+function YearStatusCard({ card }) {
+  if (!card) return null;
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+      <div className="text-sm font-medium text-zinc-400">{card.title}</div>
+      <p className="mt-1 text-base leading-relaxed text-zinc-100">{card.status}</p>
+    </div>
+  );
+}
+
 function RelationshipCard({ relationship, primary, secondary, year }) {
   if (!relationship || !primary || !secondary) return null;
   return (
@@ -1039,7 +1050,11 @@ function MCUTimelineDashboard() {
           <div className="absolute bottom-0 left-0 right-0 text-xs text-zinc-500">{marks.map((y) => <button key={y} type="button" onClick={() => (setIsPlaying(false), setSelectedYear(clamp(y, timelineStartYear, timelineEndYear)))} className={`absolute -translate-x-1/2 rounded-full px-2 py-1 transition hover:bg-white/10 hover:text-white ${y === selectedYear ? "bg-red-500/20 font-semibold text-white ring-1 ring-red-400/60" : ""}`} style={{ left: `${timelineScale.pctForYear(y)}%` }}>{y}</button>)}</div>
         </div>
         {selectedCallout && <motion.div key={`${selectedYear}-${callouts.length}`} initial={{ opacity: 0, y: 10, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} className={`mx-auto grid w-full max-w-3xl gap-3 ${callouts.length > 1 ? "md:grid-cols-2" : "max-w-sm"}`}>{callouts.map((event) => <button key={event.id} type="button" onClick={() => setSelectedCalloutId(event.id)} className="w-full cursor-pointer text-left transition"><div className={`h-full rounded-2xl border bg-zinc-950 p-4 shadow-2xl ${selectedCalloutId === event.id || callouts.length === 1 ? "border-red-400/60 ring-2 ring-red-500/30" : "border-white/10"}`}><EventBadges event={event} /><h3 className="mt-2 text-sm font-bold">{event.title}</h3><p className="mt-1 line-clamp-3 text-xs leading-relaxed text-zinc-400">{event.short}</p></div></button>)}</motion.div>}
-      </div><div className="mt-8 grid gap-4 border-t border-white/10 pt-6 lg:grid-cols-2"><CharacterIntelligenceCard profile={intelligenceProfile} /><RelationshipCard relationship={compareRelationship} primary={selectedCharacter} secondary={compareCharacter} year={selectedYear} /><div className="rounded-2xl border border-white/10 bg-white/5 p-4"><div className="mb-1 text-sm font-medium text-zinc-400">{characterStatusCard?.title}</div><p className="leading-relaxed text-zinc-100">{characterStatusCard?.status}</p></div><WhereaboutsCard intel={whereabouts} year={selectedYear} /><CharacterAnalysisCard entry={characterAnalysis} year={selectedYear} sourceName={characterAnalysisSourceName} />{compareCharacter && <div className="rounded-2xl border border-white/10 bg-white/5 p-4"><div className="mb-1 text-sm font-medium text-zinc-400">{compareCharacter.shortName} in {selectedYear}</div><p className="leading-relaxed text-zinc-100">{compareStatus}</p></div>}</div></CardContent></Card>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <YearStatusCard card={characterStatusCard} />
+          <WhereaboutsCard intel={whereabouts} year={selectedYear} />
+        </div>
+      </div><div className="mt-8 grid gap-4 border-t border-white/10 pt-6 lg:grid-cols-2"><CharacterIntelligenceCard profile={intelligenceProfile} /><RelationshipCard relationship={compareRelationship} primary={selectedCharacter} secondary={compareCharacter} year={selectedYear} /><CharacterAnalysisCard entry={characterAnalysis} year={selectedYear} sourceName={characterAnalysisSourceName} />{compareCharacter && <div className="rounded-2xl border border-white/10 bg-white/5 p-4"><div className="mb-1 text-sm font-medium text-zinc-400">{compareCharacter.shortName} in {selectedYear}</div><p className="leading-relaxed text-zinc-100">{compareStatus}</p></div>}</div></CardContent></Card>
     </div>}
     {!selectedCharacter && <HeroVerseAnswerCard answer={aiAnswer} />}
     <SourceCredits />
